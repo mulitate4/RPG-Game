@@ -114,7 +114,7 @@ while True:
 				print("quit the game")
 				break
 			else:
-				"Enter valid direction with W-up, A-left, S-down, D-right"
+				print ("Enter valid direction with W-up, A-left, S-down, D-right")
 			system("cls")
 		
 		print("If this message appears, this game is running fine!")
