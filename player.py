@@ -1,11 +1,5 @@
 import random
-<<<<<<< HEAD
-<<<<<<<< HEAD:player.py
-========
 import time
->>>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30:rpg.py
-=======
->>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30
 import json
 
 common_items = ["stick", "apple"]
@@ -55,18 +49,12 @@ class player():
 	player_money = 0
 	player_backpack = []
 
-<<<<<<< HEAD
-<<<<<<<< HEAD:player.py
 	player_location = {
 		"chunk": 1,
 		"x_pos": 1,
 		"y_pos": 1,
 	}
 
-========
->>>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30:rpg.py
-=======
->>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30
 	def __init__(self, player_name, exists: bool):
 		if exists == True:
 			print(f"Welcome back {player_name}")
@@ -81,15 +69,9 @@ class player():
 			self.player_money = player_data[player_name]["player_money"]
 			self.player_backpack = player_data[player_name]["player_backpack"]
 
-<<<<<<< HEAD
-<<<<<<<< HEAD:player.py
 			self.player_location["x_pos"] = player_data[player_name]["player_location"]["x_pos"]
 			self.player_location["y_pos"] = player_data[player_name]["player_location"]["y_pos"]
 			self.player_location["chunk"] = player_data[player_name]["player_location"]["chunk"]
-========
->>>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30:rpg.py
-=======
->>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30
 
 			self.set_sword_damage()
 			self.set_player_level()
@@ -110,9 +92,10 @@ class player():
 			local_required_exp += 10
 			if local_exp >= local_required_exp:
 				local_exp -= local_required_exp
-				self.player_level += 1
+				level += 1
 			else:
 				break
+		self.player_level = level
 		self.player_exp = local_exp
 		self.player_required_exp = local_required_exp
 		return self.player_level, self.player_exp
@@ -160,10 +143,6 @@ class player():
 	#Returns random damage, will be used a lot!
 	def get_player_sword_randomdmg(self):
 		random_dmg = random.randint(self.player_sword_damage[0], self.player_sword_damage[1])
-<<<<<<< HEAD
-<<<<<<<< HEAD:player.py
-		return random_dmg
-========
 		return random_dmg
 
 #this is enemy super class
@@ -197,81 +176,3 @@ class Enemy():
 	def enemy_damage_health(self, damage: int):
 		self.health -= damage
 		return self.health
-
-print("⚔Welcome to Da RPG Gaem⚔")
-print("select option:")
-while True:
-	#Main Menu
-	print("a: Play\nb: Quit Game")
-	choice = input()
-
-	#choice = play/a/2
-	if choice == 'a' or choice == 'play' or choice == '2':
-		player_name = input("Enter Player Name: ")
-		login_failed = True
-
-		#checks if player name exists
-		if player_name in [player for player in player_data]:
-
-			#while loop to keep asking password
-			while login_failed == True:
-				password = input("Enter Password: ")
-
-				#check password given
-				if password == player_data[player_name]["password"]:
-					#Password matches, continue with game
-					login_failed = False
-					game_player = player(player_name=player_name, exists=True)
-					break
-				else:
-					#Password doesn't match
-					print(f"Player name and Password don't match!")
-					enter_pass_again = input("Do you want to try again?\ny: Yes\nn: No\n")
-					if enter_pass_again == 'Yes' or enter_pass_again == 'y' or enter_pass_again == 'yes':
-						login_failed = True
-						continue
-					elif enter_pass_again == 'No' or enter_pass_again == 'n' or enter_pass_again == 'no':
-						print("Okay, Bbye!")
-						login_failed = True
-						break
-					else:
-						print("Enter a valid choice")
-						login_failed = True
-						continue
-
-		#If player name doesnt exist, create a new one!
-		elif player_name not in [player for player in players.keys()]:
-			create_new_acc = input(f"{player_name} does not exist, create a new player?\ny: Yes\nn: No\n")
-			while True:
-				if create_new_acc == 'yes' or create_new_acc == 'y' or create_new_acc == 'Yes':
-					password = input("Enter a P4$$w0rd: ")
-					players[player_name] = password
-					game_player = player(player_name=player_name, exists=False)
-					print(f"Welcome {player_name}")
-					login_failed = False
-					break
-				elif create_new_acc == "no" or create_new_acc == "n" or create_new_acc == "No":
-					print("BBye!")
-					break
-				else:
-					print("Enter a valid option ples!")
-					continue
-		
-		if login_failed == True:
-			break
-
-		#Game starts here, while loop count - 1
-		print(f"health = {game_player.health}")
-		print(f"money = {game_player.player_money}")
-		print("If this message appears, this game is running fine!")
-		break
-
-	#Quit the game
-	if choice == 'b' or choice == 'quit' or choice == 2:
-		print("You quit the game, Cya!")
-		break
-	time.sleep(2)
->>>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30:rpg.py
-=======
-		return random_dmg
->>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30

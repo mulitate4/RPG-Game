@@ -4,10 +4,7 @@ import json
 import player
 import rpg_map
 import enemies
-<<<<<<< HEAD
 from os import system
-=======
->>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30
 
 class Wipe(object):
     def __repr__(self):
@@ -86,7 +83,6 @@ while True:
 			break
 
 		#Game starts here, while loop count - 1
-<<<<<<< HEAD
 		ch = game_player.player_location["chunk"]
 		x = game_player.player_location["x_pos"]
 		y = game_player.player_location["y_pos"]
@@ -122,15 +118,6 @@ while True:
 			system("cls")
 		
 		print("If this message appears, this game is running fine!")
-=======
-		map = rpg_map.map(2,2,1)
-		print(map.draw_map())
-		print(map.player_move_up())
-		print(f"health = {game_player.health}")
-		print(f"money = {game_player.player_money}")
-		print("If this message appears, this game is running fine!")
-		time.sleep(2)
->>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30
 		break
 
 	#Quit the game
