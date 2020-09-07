@@ -1,0 +1,64 @@
+{
+    "Mulitate4" : {
+        "password" : "passw0rd",
+        "health" : 100,
+        "player_sword_level" : 1,
+        "player_bow_level" : 1,
+        "player_level" : 0,
+        "player_exp" : 0,
+        "player_required_exp" : 40,
+        "player_money" : 100,
+<<<<<<< HEAD
+        "player_backpack" : [],
+        "player_location" : {
+            "chunk" : 2,
+            "x_pos" : 3,
+            "y_pos" : 2
+        }
+=======
+        "player_backpack" : []
+>>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30
+    },
+    "Blitch89" : {
+        "password" : "blitch89",
+        "health" : 100,
+        "player_sword_level" : 1,
+        "player_bow_level" : 1,
+        "player_level" : 0,
+        "player_exp" : 0,
+        "player_required_exp" : 40,
+        "player_money" : 0,
+<<<<<<< HEAD
+        "player_backpack" : [],
+        "player_location" : {
+            "chunk" : 1,
+            "x_pos" : 1,
+            "y_pos" : 1
+        }
+    },
+    "bruh" : {
+=======
+        "player_backpack" : []
+    },
+    "niganae" : {
+>>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30
+        "password" : "naenae",
+        "health" : 100,
+        "player_sword_level" : 1,
+        "player_bow_level" : 1,
+        "player_level" : 0,
+        "player_exp" : 0,
+        "player_required_exp" : 40,
+        "player_money" : 0,
+<<<<<<< HEAD
+        "player_backpack" : [],
+        "player_location" : {
+            "chunk" : 1,
+            "x_pos" : 1,
+            "y_pos" : 1
+        }
+=======
+        "player_backpack" : []
+>>>>>>> d8a65ed1085a36a0fbc9d4eae6fb726d00f21e30
+    }
+}
