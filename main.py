@@ -6,11 +6,65 @@ import rpg_map
 import enemies
 from os import system
 
-class Wipe(object):
-    def __repr__(self):
-        return '\n'*1000
+enemy_encountered = False
 
-wipe = Wipe()
+def main_game():
+	while True:
+		print(map.draw_map())
+		dir = input("enter direction: ")
+		if dir == "w":
+			if map.check_player_movement("up") == "enemy":
+				system("cls")
+				print("enemy encountered")
+				enemy_encountered = True
+				print(enemy_encountered)
+				break
+			else:
+				print(map.player_move("up"))
+
+		elif dir == "a":
+			if map.check_player_movement("left") == "enemy":
+				system("cls")
+				print("enemy encountered")
+				enemy_encountered = True
+				break
+			else:
+				print(map.player_move("left"))
+
+		elif dir == "d":
+			if map.check_player_movement("right") == "enemy":
+				system("cls")
+				print("enemy encountered")
+				enemy_encountered = True
+				break
+			else:
+				print(map.player_move("right"))
+
+		elif dir == "s":
+			if map.check_player_movement("down") == "enemy":
+				system("cls")
+				print("enemy encountered")
+				enemy_encountered = True
+				break
+			else:
+				print(map.player_move("down"))
+		elif dir == "q":
+			print("quit the game")
+			break
+		else:
+			print ("Enter valid direction with W-up, A-left, S-down, D-right")
+		system("cls")
+
+	if enemy_encountered == True:
+		enemy_encounter()
+
+
+def enemy_encounter():
+	print("ok")
+
+def stats():
+	print(f"health = {game_player.health}")
+	print(f"money = {game_player.player_money}")
 
 players = {
 	"Mulitate4": "passw0rd"
@@ -60,7 +114,7 @@ while True:
 						login_failed = True
 						continue
 
-		#If player name doesnt exist, create a new one!
+		#If player name doesnt exist, creates new
 		elif player_name not in [player for player in players.keys()]:
 			#while loop to break out of - 2
 			while True:
@@ -79,6 +133,7 @@ while True:
 					print("Enter a valid option ples!")
 					continue
 		
+		#exit game if login failed
 		if login_failed == True:
 			break
 
@@ -86,38 +141,56 @@ while True:
 		ch = game_player.player_location["chunk"]
 		x = game_player.player_location["x_pos"]
 		y = game_player.player_location["y_pos"]
-		
-		print(game_player.player_location)
 		map = rpg_map.map(ch, x, y)
-		print(f"health = {game_player.health}")
-		print(f"money = {game_player.player_money}")
 
-		enemy_encountered = False
-
-		while True:
+		'''while True:
 			print(map.draw_map())
 			dir = input("enter direction: ")
 			if dir == "w":
 				if map.check_player_movement("up") == "enemy":
 					system("cls")
 					print("enemy encountered")
+					enemy_encountered = True
+					print(enemy_encountered)
 					break
 				else:
 					print(map.player_move("up"))
+
 			elif dir == "a":
-				print(map.player_move("left"))
+				if map.check_player_movement("left") == "enemy":
+					system("cls")
+					print("enemy encountered")
+					enemy_encountered = True
+					break
+				else:
+					print(map.player_move("left"))
+
 			elif dir == "d":
-				print(map.player_move("right"))
+				if map.check_player_movement("right") == "enemy":
+					system("cls")
+					print("enemy encountered")
+					enemy_encountered = True
+					break
+				else:
+					print(map.player_move("right"))
+
 			elif dir == "s":
-				print(map.player_move("down"))
+				if map.check_player_movement("down") == "enemy":
+					system("cls")
+					print("enemy encountered")
+					enemy_encountered = True
+					break
+				else:
+					print(map.player_move("down"))
 			elif dir == "q":
 				print("quit the game")
 				break
 			else:
 				print ("Enter valid direction with W-up, A-left, S-down, D-right")
 			system("cls")
-		
-		print("If this message appears, this game is running fine!")
+		'''
+		main_game()
+
 		break
 
 	#Quit the game
