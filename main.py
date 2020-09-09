@@ -1,10 +1,11 @@
 import random
 import time
 import json
-import player
-import rpg_map
-import enemies
 from os import system
+
+from game_files import player
+from game_files import rpg_map
+from game_files import enemies
 
 enemy_encountered = False
 
