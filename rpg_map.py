@@ -1,18 +1,5 @@
 import numpy as n
 
-'''chunk_2 = n.ndarray(shape=(50,50), dtype = int)
-
-chunk_1 = n.asarray(chunk_1)
-print(chunk_1)
-
-for x, row in enumerate(chunk_2):
-	for y, col in enumerate(row):
-		chunk_2[x][y] = 101
-
-
-chunk_2[1][1] = 43742
-print(chunk_2)'''
-
 class map():
 	immovable_block = 10
 	enemy = 2
@@ -155,35 +142,3 @@ class map():
 			if self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]][self.player_location["x_pos"]+1] == 5:
 				ret_str = "enemy"
 				return ret_str
-
-	'''def player_move_right(self):
-		if self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]][self.player_location["x_pos"]+1] == 10:
-			return "Can't move, immovable block\n"
-
-		self.player_location["x_pos"] += 1
-		self.update_player_pos()
-		return self.draw_map()
-
-	def player_move_left(self):
-		if self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]][self.player_location["x_pos"]-1] == 10:
-			return "Can't move, immovable block\n"
-
-		self.player_location["x_pos"] -= 1
-		self.update_player_pos()
-		return self.draw_map()
-		
-	def player_move_up(self):
-		if self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]-1][self.player_location["x_pos"]] == 10:
-			return "Can't move, immovable block\n"
-
-		self.player_location["y_pos"] -= 1
-		self.update_player_pos()
-		return self.draw_map()
-
-	def player_move_down(self):
-		if self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]+1][self.player_location["x_pos"]] == 10:
-			return "Can't move, immovable block\n"
-
-		self.player_location["y_pos"] += 1
-		self.update_player_pos()
-		return self.draw_map()'''
