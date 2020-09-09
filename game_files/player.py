@@ -29,7 +29,7 @@ players = {
 	"Mulitate4": "passw0rd"
 }
 
-with open ("player.json") as f:
+with open ("other_files/player.json") as f:
 	player_data = json.load(f)
 
 class player():
