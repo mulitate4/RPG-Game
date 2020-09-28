@@ -25,15 +25,17 @@ bow_levels = {
 	4:"great bow",
 }
 
-players = {
-	"Mulitate4": "passw0rd"
-}
-
-with open ("other_files/player.json") as f:
-	player_data = json.load(f)
+def get_player_data():
+	with open ("game_files/other_files/player.json") as p:
+		return json.load(p)
+		
+player_data = get_player_data()
 
 class player():
-	health = 100
+	#---------------
+	# ALL VARIABLES
+	#---------------
+	player_health = 100
 	player_sword_damage = []
 
 	player_sword_level = 1
@@ -55,34 +57,28 @@ class player():
 		"y_pos": 1,
 	}
 
-	def __init__(self, player_name, exists: bool):
+	def __init__(self, player_name, exists: bool, password = None):
 		if exists == True:
 			print(f"Welcome back {player_name}")
-			self.health = player_data[player_name]["health"]
-			self.player_sword_level = player_data[player_name]["player_sword_level"]
-			self.player_bow_level = player_data[player_name]["player_sword_level"]
-
-			self.player_exp = player_data[player_name]["player_level"]
-			self.player_level = player_data[player_name]["player_level"]
-			self.player_required_exp = player_data[player_name]["player_required_exp"]
-
-			self.player_money = player_data[player_name]["player_money"]
-			self.player_backpack = player_data[player_name]["player_backpack"]
-
-			self.player_location["x_pos"] = player_data[player_name]["player_location"]["x_pos"]
-			self.player_location["y_pos"] = player_data[player_name]["player_location"]["y_pos"]
-			self.player_location["chunk"] = player_data[player_name]["player_location"]["chunk"]
+			
+			self.get_player_data(player_name=player_name)
 
 			self.set_sword_damage()
-			self.set_player_level()
 
-		elif exists == False:
+		else:
 			print("New account created :3")
+			player_data[player_name] = {}
+			player_data[player_name]["password"] = password
 
-	'''These are initializing functions, will probably be required to run most of time
-	so call these two - set_player_level(), and set_sword_damage().
-	-- Gotta find a more efficient way :/'''
-	#Player level function -sets player level after an encounter
+			self.save_player_data(player_name=player_name)
+			self.save_player_data_json(player_name=player_name)
+			
+			self.set_sword_damage()
+
+	#________________________#
+	#-----------------
+	# LEVELING METHOD
+	#-----------------
 	def set_player_level(self):
 		local_required_exp = self.player_required_exp
 		local_exp = self.player_exp
@@ -100,11 +96,16 @@ class player():
 		self.player_required_exp = local_required_exp
 		return self.player_level, self.player_exp
 
-	#Init function (?), can be used by shop
+	#------------------
+	# SWORD INIT METHOD
+	#------------------
 	def set_sword_damage(self):
 		self.player_sword_damage = sword_damages[self.player_sword_level]
+	#_________________________#
 
-	#Player money methods
+	#----------------------
+	# PLAYER MONEY METHODS
+	#----------------------
 	def player_money_add(self, amount: int):
 		self.player_money += amount
 		return self.player_money
@@ -113,66 +114,87 @@ class player():
 		self.player_money -= amount
 		return self.player_money
 
-	#Player Shop interaction, also calls set_sword_damage, which is required!
+	#---------------------
+	# PLAYER SHOP METHODS
+	#---------------------
 	def shop_set_sword_level(self, sword_level: int):
 		self.player_sword_level = sword_level
 		self.set_sword_damage()
 		return f"Your sword is {self.get_player_sword_type()} which does {self.get_player_sword_damage_range()}"
 
-	#Player backpack methods
+	#-------------------------
+	# PLAYER BACKPACK METHODS
+	#-------------------------
 	def backpack_add_item(self, item):
 		self.player_backpack.append(item)
 
-	#Player health methods
+	#-----------------------
+	# PLAYER HEALTH METHODS
+	#-----------------------
 	def damage_health(self, damage_amount):
-		self.health -= damage_amount
-		return self.health
+		self.player_health -= damage_amount
+		return self.player_health
 
 	def heal_health(self, heal_amount):
-		self.health += heal_amount
-		return self.health
+		self.player_health += heal_amount
+		return self.player_health
 
-	#Returns player's damage range
+	#----------------------------
+	# RETURNS TUPLE OF SWORD DMG
+	#----------------------------
 	def get_player_sword_damage_range(self):
-		return f"{self.player_sword_damage[0]}-{self.player_sword_damage[1]}"
+		return (self.player_sword_damage[0], self.player_sword_damage[1])
 
-	#Return's player's sword type
+	#---------------------------
+	# RETURNS SWORD TYPE AS STR
+	#---------------------------
 	def get_player_sword_type(self):
 		return sword_types[self.player_sword_level]
 
-	#Returns random damage, will be used a lot!
+	#-----------------------------
+	# RETURNS RANDOM DAMAGE AS INT
+	#-----------------------------
 	def get_player_sword_randomdmg(self):
 		random_dmg = random.randint(self.player_sword_damage[0], self.player_sword_damage[1])
 		return random_dmg
 
-#this is enemy super class
-class Enemy():
-	health = 20
-	damage = [1, 5]
-	exp = [10, 20]
-	gold = [5, 10]
+	#-------------------------------
+	# SAVE AND RETRIEVE PLAYER DATA
+	#-------------------------------
+	def save_player_data(self, player_name: str):
+		player_data[player_name]["health"] = self.player_health
+		player_data[player_name]["player_sword_level"] = self.player_sword_level
+		player_data[player_name]["player_sword_level"] = self.player_bow_level
 
-	def __init__(self, rank: int):
-		self.health *= rank
-		for i, damage_possible in enumerate(self.damage):
-			damage_possible *= rank
-			self.damage[i] = damage_possible
-		for i, exp_possible in enumerate(self.exp):
-			exp_possible *= rank
-			self.exp[i] = exp_possible
-		for i, gold_possible in enumerate(self.gold):
-			gold_possible *= rank
-			self.gold[i] = gold_possible
+		player_data[player_name]["player_level"] = self.player_exp
+		player_data[player_name]["player_level"] = self.player_level
+		player_data[player_name]["player_required_exp"] = self.player_required_exp 
 
-	def get_random_damage(self):
-		return random.randint(self.damage[0], self.damage[1])
+		player_data[player_name]["player_money"] = self.player_money 
+		player_data[player_name]["player_backpack"] = self.player_backpack
 
-	def get_random_gold_drop(self):
-		return random.randint(self.gold[0], self.gold[1])
+		player_data[player_name]["player_location"] = {}
+		player_data[player_name]["player_location"]["x_pos"] = self.player_location["x_pos"] 
+		player_data[player_name]["player_location"]["y_pos"] = self.player_location["y_pos"] 
+		player_data[player_name]["player_location"]["chunk"] = self.player_location["chunk"]
+	
+	def save_player_data_json(self, player_name:str):
+		self.save_player_data(player_name=player_name)
+		with open('game_files/other_files/player.json','w') as outfile:
+			json.dump(player_data, outfile)
 
-	def get_random_exp_drop(self):
-		return random.randint(self.exp[0], self.exp[1])
+	def get_player_data(self, player_name):
+		self.player_health = player_data[player_name]["health"]
+		self.player_sword_level = player_data[player_name]["player_sword_level"]
+		self.player_bow_level = player_data[player_name]["player_sword_level"]
 
-	def enemy_damage_health(self, damage: int):
-		self.health -= damage
-		return self.health
+		self.player_exp = player_data[player_name]["player_level"]
+		self.player_level = player_data[player_name]["player_level"]
+		self.player_required_exp = player_data[player_name]["player_required_exp"]
+
+		self.player_money = player_data[player_name]["player_money"]
+		self.player_backpack = player_data[player_name]["player_backpack"]
+
+		self.player_location["x_pos"] = player_data[player_name]["player_location"]["x_pos"]
+		self.player_location["y_pos"] = player_data[player_name]["player_location"]["y_pos"]
+		self.player_location["chunk"] = player_data[player_name]["player_location"]["chunk"]
