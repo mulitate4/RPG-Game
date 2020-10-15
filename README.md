@@ -1,10 +1,16 @@
 # rpg_game
-An RPG-game I've been working on in pure python.
-This game features a map, which is made using array-backed grids, and a turn based RPG game!
+## A Dank RPG game, I've been working on in Pure Python.
 
-This project will soon be hosted on a website using django, js, html, and css :D
+### Modules used:
+- Numpy.
+- Random.
 
-THIS IS A WORK IN PROGRESS, contact me on discord, if you find any bugs
-Discord: Mulitate4#9118
+### Features:
+- A Map System.
+- A turn-based RPG system.
 
-If you wanna play, Just clone this repo, and run main.py, nothing else!
+### TO-DO:
+- Convert to Webapp.
+- Convert to App.
+- Add Enemy Fighting section.
+- Convert to Pygame.

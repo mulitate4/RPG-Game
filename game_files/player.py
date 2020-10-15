@@ -70,8 +70,7 @@ class player():
 			player_data[player_name] = {}
 			player_data[player_name]["password"] = password
 
-			self.save_player_data(player_name=player_name)
-			self.save_player_data_json(player_name=player_name)
+			self.save_player_data_json(player_name=player_name, player_location=self.player_location)
 			
 			self.set_sword_damage()
 
@@ -161,7 +160,7 @@ class player():
 	#-------------------------------
 	# SAVE AND RETRIEVE PLAYER DATA
 	#-------------------------------
-	def save_player_data(self, player_name: str):
+	def save_player_data_json(self, player_name: str, player_location):
 		player_data[player_name]["health"] = self.player_health
 		player_data[player_name]["player_sword_level"] = self.player_sword_level
 		player_data[player_name]["player_sword_level"] = self.player_bow_level
@@ -173,13 +172,7 @@ class player():
 		player_data[player_name]["player_money"] = self.player_money 
 		player_data[player_name]["player_backpack"] = self.player_backpack
 
-		player_data[player_name]["player_location"] = {}
-		player_data[player_name]["player_location"]["x_pos"] = self.player_location["x_pos"] 
-		player_data[player_name]["player_location"]["y_pos"] = self.player_location["y_pos"] 
-		player_data[player_name]["player_location"]["chunk"] = self.player_location["chunk"]
-	
-	def save_player_data_json(self, player_name:str):
-		self.save_player_data(player_name=player_name)
+		player_data[player_name]["player_location"] = player_location
 		with open('game_files/other_files/player.json','w') as outfile:
 			json.dump(player_data, outfile)
 
