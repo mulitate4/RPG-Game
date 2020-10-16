@@ -8,7 +8,7 @@ class map():
 	chunk_1 = asarray([
 		[10, 10, 10, 10, 10],
 		[10, 0, 0, 0, 10],
-		[0, 0, 0, 0, 0],
+		[10, 0, 0, 0, 0],
 		[10, 0, 0, 0, 10],
 		[10, 0, 0, 10, 10],
 	])
@@ -20,6 +20,14 @@ class map():
 		[10, 10, 0, 10, 10],
 	])
 	chunk_3 = asarray([
+		[10, 10, 10, 10, 10],
+		[10, 0, 0, 5, 10],
+		[0, 0, 0, 0, 10],
+		[10, 0, 0, 0, 10],
+		[10, 10, 0, 10, 10],
+	])
+	
+	chunk_4 = asarray([
 		[10, 10, 0, 10, 10],
 		[10, 0, 0, 5, 10],
 		[0, 0, 0, 0, 10],
@@ -32,7 +40,7 @@ class map():
 		[2, 4],
 		[6, 5],
 	])
-	chunks = {1: chunk_1, 2: chunk_2, 3: chunk_3}
+	chunks = {1: chunk_1, 2: chunk_2, 3: chunk_3, 4: chunk_4}
 
 	player_location = {
 		"chunk": 1,
@@ -48,9 +56,9 @@ class map():
 		#------PLACES THE PLAYER IN THE CORRECT POSITION------#
 		self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]][self.player_location["x_pos"]] = 2
 
-	def draw_map(self):
+	def draw_map(self, chunk):
 		gui_grid = ""
-		for x, row in enumerate(self.chunks[self.player_location["chunk"]]):
+		for x, row in enumerate(self.chunks[chunk]):
 			for y, col in enumerate(row):
 				#if col == 10:
 				#	gui_grid += " ■ "
@@ -58,13 +66,13 @@ class map():
 				if x == 0 and y == 0:
 					gui_grid += " \u259B "
 
-				elif x == 0 and y == len(self.chunks[self.player_location["chunk"]]) - 1:
+				elif x == 0 and y == len(self.chunks[chunk]) - 1:
 					gui_grid += "\u259c "
 				
-				elif x == len(self.chunks[self.player_location["chunk"]]) - 1 and y == 0:
+				elif x == len(self.chunks[chunk]) - 1 and y == 0:
 					gui_grid += " \u2599 "
 
-				elif x == len(self.chunks[self.player_location["chunk"]]) - 1 and y == len(self.chunks[self.player_location["chunk"]]) - 1:
+				elif x == len(self.chunks[chunk]) - 1 and y == len(self.chunks[chunk]) - 1:
 					gui_grid += "\u259F "
 
 				#elif col == 10:
@@ -72,13 +80,13 @@ class map():
 				elif y == 0 and col == 10:
 					gui_grid += " \u258d "
 
-				elif y == len(self.chunks[self.player_location["chunk"]])-1 and col==10:
+				elif y == len(self.chunks[chunk])-1 and col==10:
 					gui_grid += " \u258d "
 
 
 				elif x == 0 and col == 10:
 					gui_grid += "▀▀▀"
-				elif x == len(self.chunks[self.player_location["chunk"]]) - 1 and col == 10:
+				elif x == len(self.chunks[chunk]) - 1 and col == 10:
 					gui_grid += "▄▄▄"
 
 				elif col == 0:
@@ -137,7 +145,7 @@ class map():
 
 		
 		self.update_player_pos()
-		return self.draw_map()
+		return self.draw_map(self.player_location['chunk'])
 
 	def check_player_movement(self, direction: str):
 		ret_str = ""
@@ -176,12 +184,23 @@ class map():
 				return ret_str
 
 	def global_chunk_move(self, dir: str):
-		curr_chunk = where(self.global_chunks == self.player_location["chunk"])
+		curr_chunk_xy = where(self.global_chunks == self.player_location["chunk"])
 		#Way of accessing y of result from n.where. curr_chunk has a list, in a tuple like so - ([y], [x])
-		curr_chunk_y = curr_chunk[0][0]
+		curr_chunk_y = curr_chunk_xy[0][0]
 		#accessing x
-		curr_chunk_x = curr_chunk[1][0]
+		curr_chunk_x = curr_chunk_xy[1][0]
 
+		#Resetting earlier chunk
+		#TODO modify update player pos, to take an arg - (global_chunk and normal). Global chunk implements this below, amd takes
+		#optional arg Chunk.
+		old_chunk_index = self.global_chunks[curr_chunk_y][curr_chunk_x]
+
+		curr_chunk = self.chunks[self.player_location["chunk"]]
+		result = where(curr_chunk==2)
+		
+		player_old_loc = [result[0][0], result[1][0]]
+
+		#TODO, make this dynamic, by taking array.size
 		if dir == "up":
 			self.player_location["chunk"] = int(self.global_chunks[curr_chunk_y-1][curr_chunk_x])
 			self.player_location["y_pos"] = 5
@@ -202,6 +221,8 @@ class map():
 			self.player_location["x_pos"] = 5
 			self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]][self.player_location["x_pos"]-1] = 2
 		
+		
+		self.chunks[old_chunk_index][player_old_loc[0]][player_old_loc[1]] = 0
 		self.player_move(dir)
 
 	def ret_player_location(self):

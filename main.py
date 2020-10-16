@@ -29,33 +29,41 @@ directions = {
 # FUNCTIONS
 #------------
 def main_game_map():
+
+	
 	while True:
-		print(map.draw_map())
-		dir = input("enter direction: ")
-		if dir == "w" or dir == "a" or dir =='s' or dir == 'd':
+		print(game_map.draw_map(game_map.player_location['chunk']))
+		direc = input("enter direction: ")
+		if direc in directions.keys():
 
 			#-----------Using Directions[dir] to convert into proper directions-----------#
 			#---------------Checks if the direction entered has enemy on it---------------#
-			if map.check_player_movement(directions[dir]) == "enemy":
-				system("cls")
+			signal = game_map.check_player_movement(directions[direc])
+
+			if signal == "enemy":
 				enemy_encounter()
-				break
-			
-			elif map.check_player_movement(directions[dir]) == "chunk_move":
-				map.global_chunk_move(directions[dir])
+
+			elif signal == "chunk_move":
+				game_map.global_chunk_move(directions[direc])
 
 			else:
-				print(map.player_move(directions[dir]))
-				game_player.save_player_data_json(player_name=player_name, player_location=map.ret_player_location())
+				print(game_map.player_move(directions[direc]))
+				game_player.save_player_data_json(player_name=player_name, player_location=game_map.ret_player_location())
 		
 		#-----------Player types Q, so quit the game-----------#
-		elif dir == "q":
+		#TODO - Make this dict
+		elif direc == "q":
 			print("quit the game")
-			game_player.save_player_data_json(player_name=player_name, player_location=map.ret_player_location())
+			game_player.save_player_data_json(player_name=player_name, player_location=game_map.ret_player_location())
 			exit()
 
-		elif dir == "map":
-			print(map.ret_player_location())
+		elif direc == "map":
+			print(game_map.ret_player_location())
+			continue
+
+		elif "chunk" in direc:
+			num = direc.split(" ")[1]
+			print(game_map.draw_map(int(num)))
 			continue
 
 		else:
@@ -69,6 +77,7 @@ def enemy_encounter():
 	# Make the Enemy Encounter system
 	# similiar to drug wars
 	#------------
+	system("cls")
 	while True:
 		print("Enemy Encountered")
 		print("your stats: \n")
@@ -176,7 +185,7 @@ while True:
 		#-----------------------
 		# print(game_player.player_location)
 
-		map = rpg_map.map(game_player)
+		game_map = rpg_map.map(game_player)
 
 		main_game_map()
 
