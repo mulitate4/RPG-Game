@@ -1,10 +1,6 @@
 from numpy import asarray, where
 
-class map():
-	immovable_block = 10
-	enemy = 2
-	player = 1
-
+class rpg_map():
 	chunk_1 = asarray([
 		[10, 10, 10, 10, 10],
 		[10, 0, 0, 0, 10],
@@ -15,7 +11,7 @@ class map():
 	chunk_2 = asarray([
 		[10, 10, 0, 10, 10],
 		[10, 0, 0, 5, 10],
-		[0, 0, 0, 0, 0],
+		[10, 0, 0, 0, 0],
 		[10, 0, 0, 0, 10],
 		[10, 10, 0, 10, 10],
 	])
@@ -26,7 +22,6 @@ class map():
 		[10, 0, 0, 0, 10],
 		[10, 10, 0, 10, 10],
 	])
-	
 	chunk_4 = asarray([
 		[10, 10, 0, 10, 10],
 		[10, 0, 0, 5, 10],
@@ -34,7 +29,6 @@ class map():
 		[10, 0, 0, 0, 10],
 		[10, 10, 0, 10, 10],
 	])
-
 	global_chunks = asarray([
 		[1, 3],
 		[2, 4],
@@ -147,6 +141,7 @@ class map():
 		self.update_player_pos()
 		return self.draw_map(self.player_location['chunk'])
 
+	#Checks player movement, before actually moving, and sending a signal
 	def check_player_movement(self, direction: str):
 		ret_str = ""
 		if direction == "up":
@@ -183,6 +178,7 @@ class map():
 				ret_str = "enemy"
 				return ret_str
 
+	#Moves the player to the next (specified) chunk
 	def global_chunk_move(self, dir: str):
 		curr_chunk_xy = where(self.global_chunks == self.player_location["chunk"])
 		#Way of accessing y of result from n.where. curr_chunk has a list, in a tuple like so - ([y], [x])
@@ -225,5 +221,6 @@ class map():
 		self.chunks[old_chunk_index][player_old_loc[0]][player_old_loc[1]] = 0
 		self.player_move(dir)
 
+	#Gives player location as a dict
 	def ret_player_location(self):
 		return self.player_location

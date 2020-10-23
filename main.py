@@ -13,6 +13,7 @@ import sys
 from game_files import player
 from game_files import rpg_map
 from game_files import enemies
+from game_files import rpg_shop
 
 #-----------
 # VARIABLES
@@ -26,7 +27,7 @@ directions = {
 }
 
 #------------
-# FUNCTIONS
+# MAIN GAME FUNCTIONS
 #------------
 def main_game_map():
 
@@ -45,17 +46,22 @@ def main_game_map():
 
 			elif signal == "chunk_move":
 				game_map.global_chunk_move(directions[direc])
+				save_game_state()
 
 			else:
 				print(game_map.player_move(directions[direc]))
-				game_player.save_player_data_json(player_name=player_name, player_location=game_map.ret_player_location())
+				save_game_state()
 		
 		#-----------Player types Q, so quit the game-----------#
-		#TODO - Make this dict
 		elif direc == "q":
 			print("quit the game")
-			game_player.save_player_data_json(player_name=player_name, player_location=game_map.ret_player_location())
+			save_game_state()
 			exit()
+
+		#---------------------------------
+		# Basically CHEAT CODES/ DEV TOOLS
+		#---------------------------------
+		#TODO - Make this dict
 
 		elif direc == "map":
 			print(game_map.ret_player_location())
@@ -65,6 +71,13 @@ def main_game_map():
 			num = direc.split(" ")[1]
 			print(game_map.draw_map(int(num)))
 			continue
+
+		elif direc == "map":
+			print(game_map.ret_player_location())
+			continue
+
+		elif direc == "shop":
+			shop()
 
 		else:
 			print ("Enter valid direction with W-up, A-left, S-down, D-right")
@@ -86,6 +99,30 @@ def enemy_encounter():
 
 	main_game_map()
 
+def shop():
+	system("cls")
+	max_chars = 0
+	for item in game_shop.items:
+		item_length = len(item)
+		if item_length > max_chars:
+			max_chars = item_length
+		
+	max_chars += 8
+	h = "+" + "-"*max_chars + "+"
+
+	print(h)
+	for item in game_shop.items:
+		print(f"|{item} iz for {game_shop.items[item]}|")
+	print(h)
+	print(game_shop.buy_item("apple"))
+	print(game_shop.sell_item("apple"))
+	print(game_shop.sell_item("apple"))
+	exit()
+
+def print_msg_box(words: list, indent: int, )
+#------------
+# SIDE/EXTRA FUNCTIONS
+#------------
 def player_stats():
 	print(f"health: {game_player.player_health}")
 	print(f"money: {game_player.player_money}")
@@ -97,6 +134,7 @@ def get_player_data():
 	with open ("game_files/other_files/player.json") as p:
 		return json.load(p)
 
+save_game_state = lambda : game_player.save_player_data_json(player_name=player_name, player_location=game_map.ret_player_location())
 #----------------
 # INITIALIZATION
 #----------------
@@ -112,10 +150,16 @@ while True:
 	print("a: Play\nb: Quit Game")
 	choice = input()
 
-	#-----------CHOICE = A (PLAY)-----------#
+	#------------
+	# GAME STARTS
+	#------------
 	if choice == 'a' or choice == 'play' or choice == '2':
 		player_name = input("Enter Player Name: ")
 		login_failed = True
+
+		#------------
+		# LOGIN SYSTEM
+		#------------
 
 		#-----------CHECK IF PLAYER EXISTS-----------#
 		#-----------PLAYER EXISTS - LOGIN-----------#
@@ -183,9 +227,9 @@ while True:
 		#-----------------------
 		# ACTUAL GAME STARTS HERE
 		#-----------------------
-		# print(game_player.player_location)
+		game_shop = rpg_shop.shop(game_player)
 
-		game_map = rpg_map.map(game_player)
+		game_map = rpg_map.rpg_map(game_player)
 
 		main_game_map()
 

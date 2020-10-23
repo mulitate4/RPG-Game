@@ -49,7 +49,7 @@ class player():
 	player_required_exp = 40
 
 	player_money = 0
-	player_backpack = []
+	player_backpack = {}
 
 	player_location = {
 		"chunk": 1,
@@ -58,21 +58,23 @@ class player():
 	}
 
 	def __init__(self, player_name, exists: bool, password = None):
+
+		#User already exists, so just retrieve data
 		if exists == True:
 			print(f"Welcome back {player_name}")
 			
+			#Stores everything into class variables
 			self.get_player_data(player_name=player_name)
-
-			self.set_sword_damage()
 
 		else:
 			print("New account created :3")
+			#Creates new account by first creating and empty dict right here and then calling save_player_data
 			player_data[player_name] = {}
 			player_data[player_name]["password"] = password
 
 			self.save_player_data_json(player_name=player_name, player_location=self.player_location)
 			
-			self.set_sword_damage()
+		self.set_sword_damage()
 
 	#________________________#
 	#-----------------
@@ -160,6 +162,8 @@ class player():
 	#-------------------------------
 	# SAVE AND RETRIEVE PLAYER DATA
 	#-------------------------------
+
+	#This takes player_location as an arg because map.py doesn't directly modify player.
 	def save_player_data_json(self, player_name: str, player_location):
 		player_data[player_name]["health"] = self.player_health
 		player_data[player_name]["player_sword_level"] = self.player_sword_level
@@ -169,9 +173,11 @@ class player():
 		player_data[player_name]["player_level"] = self.player_level
 		player_data[player_name]["player_required_exp"] = self.player_required_exp 
 
+		#Modified by Shop.py, hence needed.
 		player_data[player_name]["player_money"] = self.player_money 
 		player_data[player_name]["player_backpack"] = self.player_backpack
 
+		#Modified by Map.py, hence needed.
 		player_data[player_name]["player_location"] = player_location
 		with open('game_files/other_files/player.json','w') as outfile:
 			json.dump(player_data, outfile)
