@@ -119,7 +119,10 @@ def shop():
 	print(game_shop.sell_item("apple"))
 	exit()
 
-def print_msg_box(words: list, indent: int, )
+def print_msg_box(words: list, indent: int):
+	pass
+
+
 #------------
 # SIDE/EXTRA FUNCTIONS
 #------------
