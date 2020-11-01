@@ -27,16 +27,28 @@ directions = {
 	's': 'down',
 	'd': 'right',
 }
-yes_aliases = [
-	"Yes",
-	"yes",
-	"y",
-]
-no_aliases = [
-	"No",
-	"no",
-	"n",
-]
+aliases = {
+	"yes_aliases" : [
+		"Yes",
+		"yes",
+		"y",
+	],
+	"no_aliases" : [
+		"No",
+		"no",
+		"n",
+	],
+	"play_game_aliases" : [
+		"1",
+		"play",
+		"a",
+	],
+	"quit_game_aliases" : [
+		"2",
+		"quit",
+		"b"
+	]
+}
 
 #------------
 # MAIN GAME FUNCTIONS
@@ -64,11 +76,11 @@ def player_login(player_name, player_data):
 				enter_pass_again = input("Do you want to try again?\ny: Yes\nn: No\n")
 
 				#Try again - Yes
-				if enter_pass_again in yes_aliases:
+				if enter_pass_again in aliases["yes_aliases"]:
 					continue
 
 				#Try again - No
-				elif enter_pass_again in no_aliases:
+				elif enter_pass_again in aliases["no_aliases"]:
 					return "leave"
 
 				#Try again - Not Valid
@@ -81,7 +93,7 @@ def player_login(player_name, player_data):
 		while True:
 			create_new_acc = input(f"{player_name} does not exist, create a new player?\ny: Yes\nn: No\n")
 			#-----------CREATE ACC - YES-----------#
-			if create_new_acc in yes_aliases:
+			if create_new_acc in aliases["yes_aliases"]:
 				#Creates a new player with the given password
 				password = input("Enter a P4$$w0rd: ")
 				game_player = player.player(player_name=player_name, exists=False, password=password)
@@ -92,7 +104,7 @@ def player_login(player_name, player_data):
 				return player_data
 
 			#-----------CREATE ACC - NO------------#
-			elif create_new_acc in no_aliases:
+			elif create_new_acc in aliases["no_aliases"]:
 				return "leave"
 
 			#-----------Create ACC - Enter Valid ---#
@@ -242,7 +254,7 @@ while True:
 	#------------
 	# GAME STARTS
 	#------------
-	if choice == 'a' or choice == 'play' or choice == '2':
+	if choice in aliases["play_game_aliases"]:
 		player_name = input("Enter Player Name: ")
 
 		#-------------
@@ -266,6 +278,6 @@ while True:
 		break
 
 	#-----------QUIT GAME - CHOICE = B-----------#
-	if choice == 'b' or choice == 'quit' or choice == 2:
+	if choice in aliases["quit_game_aliases"]:
 		print("You quit the game, Cya!")
 		break
