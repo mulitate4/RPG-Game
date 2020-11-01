@@ -42,9 +42,7 @@ no_aliases = [
 # MAIN GAME FUNCTIONS
 #------------
 def player_login(player_name, player_data):
-	#------------
 	# LOGIN SYSTEM
-	#------------
 
 	#-----------CHECK IF PLAYER EXISTS-----------#
 	#-----------PLAYER EXISTS - LOGIN-----------#
@@ -104,6 +102,7 @@ def player_login(player_name, player_data):
 
 def main_game_map():
 	while True:
+		print(border_msg(["W: Move Up", "S: Move Down", "A: Move Left", "D: Move Right"]))
 		print(game_map.draw_map(game_map.player_location['chunk']))
 		direc = input("enter direction: ")
 		if direc in directions.keys():
@@ -140,11 +139,8 @@ def main_game_map():
 
 		elif "chunk" in direc:
 			num = direc.split(" ")[1]
-			print(game_map.draw_map(int(num)))
-			continue
-
-		elif direc == "map":
-			print(game_map.ret_player_location())
+			num = int(num)
+			print(game_map.draw_map(num))
 			continue
 
 		elif direc == "shop":
@@ -153,7 +149,7 @@ def main_game_map():
 		else:
 			print ("Enter valid direction with W-up, A-left, S-down, D-right")
 			continue
-		system("cls")
+		clear_console()
 
 def enemy_encounter():
 	#------------
@@ -227,6 +223,7 @@ def border_msg(sentences: list, indent = 1):
 
 save_game_state = lambda : game_player.save_player_data_json(player_name=player_name, player_location=game_map.ret_player_location())
 
+clear_console = lambda : system("cls")
 
 #----------------
 # INITIALIZATION
