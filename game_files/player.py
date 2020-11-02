@@ -123,6 +123,10 @@ class player():
 		self.set_sword_damage()
 		return f"Your sword is {self.get_player_sword_type()} which does {self.get_player_sword_damage_range()}"
 
+	def set_money_backpack(self, money, backpack):
+		self.player_backpack = backpack
+		self.player_money = money
+
 	#-------------------------
 	# PLAYER BACKPACK METHODS
 	#-------------------------
@@ -174,7 +178,7 @@ class player():
 		player_data[player_name]["player_required_exp"] = self.player_required_exp 
 
 		#Modified by Shop.py, hence needed.
-		player_data[player_name]["player_money"] = self.player_money 
+		player_data[player_name]["player_money"] = self.player_money
 		player_data[player_name]["player_backpack"] = self.player_backpack
 
 		#Modified by Map.py, hence needed.

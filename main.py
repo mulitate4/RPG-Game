@@ -113,8 +113,8 @@ def player_login(player_name, player_data):
 				continue
 
 def main_game_map():
+	print(border_msg(["W: Move Up", "S: Move Down", "A: Move Left", "D: Move Right"]))
 	while True:
-		print(border_msg(["W: Move Up", "S: Move Down", "A: Move Left", "D: Move Right"]))
 		print(game_map.draw_map(game_map.player_location['chunk']))
 		direc = input("enter direction: ")
 		if direc in directions.keys():
@@ -179,23 +179,18 @@ def enemy_encounter():
 	main_game_map()
 
 def shop():
-	system("cls")
-	max_chars = 0
-	for item in game_shop.items:
-		item_length = len(item)
-		if item_length > max_chars:
-			max_chars = item_length
-		
-	max_chars += 8
-	h = "+" + "-"*max_chars + "+"
+	clear_console()
 
-	print(h)
+	items_list = []
+
 	for item in game_shop.items:
-		print(f"|{item} iz for {game_shop.items[item]}|")
-	print(h)
-	print(game_shop.buy_item("apple"))
+		items_list.append(f"{item} iz for {game_shop.items[item]}")
+	print(border_msg(items_list))
+	print(border_msg([game_shop.buy_item("apple")]))
+	print(border_msg([game_shop.sell_item("apple")]))
 	print(game_shop.sell_item("apple"))
-	print(game_shop.sell_item("apple"))
+	# money, backpack = game_shop.ret_money_backpack()
+	# game_player.set_money_backpack(money, backpack)
 	exit()
 
 #------------
@@ -273,6 +268,7 @@ while True:
 		#------------------------
 		game_shop = rpg_shop.shop(game_player)
 		game_map = rpg_map.rpg_map(game_player)
+
 		main_game_map()
 
 		break
