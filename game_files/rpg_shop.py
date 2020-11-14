@@ -18,14 +18,19 @@ class shop():
         #TODO Add amt arg to buy and sell
 
         if buy_item in self.items:
-            #If Player already has the item, add the item to his backpack
-            if buy_item in self.player_backpack:
-                self.player_backpack[buy_item] += amt
+            if self.player_money > self.items[buy_item]:
+                self.player_money -= self.items[buy_item]
 
-            #Else add the item for first time to his backpack
+                #If Player already has the item, add the item to his backpack
+                if buy_item in self.player_backpack:
+                    self.player_backpack[buy_item] += amt
+
+                #Else add the item for first time to his backpack
+                else:
+                    self.player_backpack[buy_item] = 1
+
             else:
-                self.player_backpack[buy_item] = 1
-
+                return "Not enough money"
             return f"Item Bought! You now have {self.player_backpack[buy_item]} {buy_item}(s)!"
         
         #Item doesn't Exist

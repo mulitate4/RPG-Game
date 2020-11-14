@@ -114,6 +114,7 @@ def player_login(player_name, player_data):
 
 def main_game_map():
 	print(border_msg(["W: Move Up", "S: Move Down", "A: Move Left", "D: Move Right"]))
+	
 	while True:
 		print(game_map.draw_map(game_map.player_location['chunk']))
 		direc = input("enter direction: ")
@@ -158,6 +159,13 @@ def main_game_map():
 		elif direc == "shop":
 			shop()
 
+		elif direc == "inv":
+			item_list = []
+			for item in game_player.player_backpack:
+				item_list.append(f'{item}: {game_player.player_backpack[item]}')
+			print(border_msg(item_list))
+			continue
+
 		else:
 			print ("Enter valid direction with W-up, A-left, S-down, D-right")
 			continue
@@ -185,6 +193,8 @@ def shop():
 
 	for item in game_shop.items:
 		items_list.append(f"{item} iz for {game_shop.items[item]}")
+
+	
 	print(border_msg(items_list))
 	print(border_msg([game_shop.buy_item("apple")]))
 	print(border_msg([game_shop.sell_item("apple")]))
