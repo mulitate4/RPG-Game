@@ -1,5 +1,12 @@
 from numpy import asarray, where
 
+def homemade_where(arr, to_check_element):
+	for y, row in enumerate(arr):
+		for x, column in enumerate(row):
+			if to_check_element != column:
+				continue
+			return (x, y)
+
 class rpg_map():
 	chunk_1 = asarray([
 		[10, 10, 10, 10, 10],
@@ -29,11 +36,11 @@ class rpg_map():
 		[10, 0, 0, 0, 10],
 		[10, 10, 0, 10, 10],
 	])
-	global_chunks = asarray([
+	global_chunks = [
 		[1, 3],
 		[2, 4],
 		[6, 5],
-	])
+	]
 	chunks = {1: chunk_1, 2: chunk_2, 3: chunk_3, 4: chunk_4}
 
 	player_location = {
@@ -95,14 +102,16 @@ class rpg_map():
 
 	#updates player position by removing old location
 	def update_player_pos(self):
-		result = where(self.chunks[self.player_location["chunk"]]==2)
+		result = homemade_where(self.chunks[self.player_location["chunk"]], 2)
 
-		# if result[0].size > 0 and result[1] > 0:
-		player_old_location = [result[0][0], result[1][0]]
-		print(player_old_location)
+		print(result)
+
+		player_old_location_x = result[0]
+		player_old_location_y = result[1]
+#		print(player_old_location)
 
 		#replaces old location with empty space (0)
-		self.chunks[self.player_location["chunk"]][player_old_location[0]][player_old_location[1]] = 0
+		self.chunks[self.player_location["chunk"]][player_old_location_y][player_old_location_x] = 0
 
 		#replaces new location with player(2)
 		self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]][self.player_location["x_pos"]] = 2
@@ -180,22 +189,26 @@ class rpg_map():
 
 	#Moves the player to the next (specified) chunk
 	def global_chunk_move(self, dir: str):
-		curr_chunk_xy = where(self.global_chunks == self.player_location["chunk"])
-		#Way of accessing y of result from n.where. curr_chunk has a list, in a tuple like so - ([y], [x])
-		curr_chunk_y = curr_chunk_xy[0][0]
+#		curr_chunk_xy = where(self.global_chunks == self.player_location["chunk"])
+		curr_chunk_xy = homemade_where(self.global_chunks, self.player_location['chunk'])
+				#Way of accessing y of result from n.where. curr_chunk has a list, in a tuple like so - ([y], [x])
+		curr_chunk_x = curr_chunk_xy[0]
 		#accessing x
-		curr_chunk_x = curr_chunk_xy[1][0]
+		curr_chunk_y = curr_chunk_xy[1]
 
 		#Resetting earlier chunk
 		#TODO modify update player pos, to take an arg - (global_chunk and normal). Global chunk implements this below, amd takes
 		#optional arg Chunk.
 		old_chunk_index = self.global_chunks[curr_chunk_y][curr_chunk_x]
+		print(old_chunk_index)
 
 		curr_chunk = self.chunks[self.player_location["chunk"]]
-		result = where(curr_chunk==2)
+		result = homemade_where(curr_chunk, 2)
 		
-		player_old_loc = [result[0][0], result[1][0]]
-
+		# player_old_loc = [result[0], result[1]]
+		player_old_loc_x = result[0]
+		player_old_loc_y = result[1]
+		
 		#TODO, make this dynamic, by taking array.size
 		if dir == "up":
 			self.player_location["chunk"] = int(self.global_chunks[curr_chunk_y-1][curr_chunk_x])
@@ -205,6 +218,10 @@ class rpg_map():
 		elif dir == "down":
 			self.player_location["chunk"] = int(self.global_chunks[curr_chunk_y+1][curr_chunk_x])
 			self.player_location["y_pos"] = -1
+			print(self.player_location["chunk"])
+			print(self.player_location["y_pos"])
+			print(self.player_location["x_pos"])
+			
 			self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]+1][self.player_location["x_pos"]] = 2
 		
 		elif dir == "right":
@@ -218,7 +235,7 @@ class rpg_map():
 			self.chunks[self.player_location["chunk"]][self.player_location["y_pos"]][self.player_location["x_pos"]-1] = 2
 		
 		
-		self.chunks[old_chunk_index][player_old_loc[0]][player_old_loc[1]] = 0
+		self.chunks[old_chunk_index][player_old_loc_y][player_old_loc_x] = 0
 		self.player_move(dir)
 
 	#Gives player location as a dict
