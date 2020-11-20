@@ -1,5 +1,7 @@
-from numpy import asarray, where
-
+# Earlier dependency of numpy.where removed.
+# Instead wrote my own version of the function
+# So don't need to use any other functions
+ 
 def homemade_where(arr, to_check_element):
 	for y, row in enumerate(arr):
 		for x, column in enumerate(row):
@@ -8,28 +10,28 @@ def homemade_where(arr, to_check_element):
 			return (x, y)
 
 class rpg_map():
-	chunk_1 = asarray([
+	chunk_1 = ([
 		[10, 10, 10, 10, 10],
 		[10, 0, 0, 0, 10],
 		[10, 0, 0, 0, 0],
 		[10, 0, 0, 0, 10],
 		[10, 0, 0, 10, 10],
 	])
-	chunk_2 = asarray([
+	chunk_2 = ([
 		[10, 10, 0, 10, 10],
 		[10, 0, 0, 5, 10],
 		[10, 0, 0, 0, 0],
 		[10, 0, 0, 0, 10],
 		[10, 10, 0, 10, 10],
 	])
-	chunk_3 = asarray([
+	chunk_3 = ([
 		[10, 10, 10, 10, 10],
 		[10, 0, 0, 5, 10],
 		[0, 0, 0, 0, 10],
 		[10, 0, 0, 0, 10],
 		[10, 10, 0, 10, 10],
 	])
-	chunk_4 = asarray([
+	chunk_4 = ([
 		[10, 10, 0, 10, 10],
 		[10, 0, 0, 5, 10],
 		[0, 0, 0, 0, 10],
