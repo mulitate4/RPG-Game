@@ -2,8 +2,8 @@
 ## A Dank RPG game, I've been working on in Pure Python.
 
 ### Modules used:
-- Numpy.
-- Random.
+- Random. (in-built)
+- That's it!
 
 ### Features:
 - A Map System.
